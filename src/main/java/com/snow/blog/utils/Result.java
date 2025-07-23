@@ -106,6 +106,27 @@ public class Result<T> implements Serializable {
     }
 
     /**
+     * 错误返回结果
+     * @param message 返回消息
+     * @param <T> 数据泛型
+     * @return 返回结果
+     */
+    public static <T> Result<T> error(String message) {
+        return new Result<>(500, message, null);
+    }
+
+    /**
+     * 错误返回结果
+     * @param code 状态码
+     * @param message 返回消息
+     * @param <T> 数据泛型
+     * @return 返回结果
+     */
+    public static <T> Result<T> error(Integer code, String message) {
+        return new Result<>(code, message, null);
+    }
+
+    /**
      * 参数验证失败返回结果
      * @param <T> 数据泛型
      * @return 返回结果
@@ -149,7 +170,7 @@ public class Result<T> implements Serializable {
      * @return 返回结果
      */
     public static <T> Result<T> forbidden() {
-        return new Result<>(403, "没有相关权限", null);
+        return new Result<>(403, "没有��关权限", null);
     }
 
     /**

@@ -1,16 +1,20 @@
 package com.snow.blog.service.Impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.snow.blog.dto.ArticlesDTO;
+import com.snow.blog.dto.ArticlesListDTO;
 import com.snow.blog.entity.Articles;
+import com.snow.blog.entity.Categories;
+import com.snow.blog.entity.Tags;
 import com.snow.blog.mappers.ArticlesMapper;
 import com.snow.blog.service.ArticlesService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticlesImpl implements ArticlesService {
@@ -19,28 +23,79 @@ public class ArticlesImpl implements ArticlesService {
     private ArticlesMapper articlesMapper;
 
     @Override
-    public List<Articles> findAll() {
-        return articlesMapper.selectList(null);
+    public List<ArticlesListDTO> findAll() {
+        List<Articles> articles = articlesMapper.selectAllArticles();
+        return articles.stream().map(this::convertToListDTO).collect(Collectors.toList());
     }
 
     @Override
-    public IPage<Articles> findByPage(Page<Articles> page, String title, String status) {
-        LambdaQueryWrapper<Articles> queryWrapper = new LambdaQueryWrapper<>();
-
-        // 添加标题模糊查询条件（如果提供了标题参数）
-        if (StringUtils.hasText(title)) {
-            queryWrapper.like(Articles::getTitle, title);
-        }
-
-        // 添加状态查询条件（如果提供了状态参数）
-        if (StringUtils.hasText(status)) {
-            queryWrapper.eq(Articles::getStatus, status);
-        }
-
-        // 默认按创建时间倒序排序
-        queryWrapper.orderByDesc(Articles::getCreatedAt);
+    public IPage<ArticlesListDTO> getArticlesList(Page<ArticlesListDTO> page, String title, String status) {
+        // 创建Articles的分页对象
+        Page<Articles> articlesPage = new Page<>(page.getCurrent(), page.getSize());
 
         // 执行分页查询
-        return articlesMapper.selectPage(page, queryWrapper);
+        IPage<Articles> articlesResult = articlesMapper.selectArticlesPage(articlesPage, title, status);
+
+        // 转换为ListDTO
+        List<ArticlesListDTO> dtoList = articlesResult.getRecords().stream()
+                .map(this::convertToListDTO)
+                .collect(Collectors.toList());
+
+        // 创建DTO分页结果
+        Page<ArticlesListDTO> dtoPage = new Page<>(page.getCurrent(), page.getSize());
+        dtoPage.setRecords(dtoList);
+        dtoPage.setTotal(articlesResult.getTotal());
+        dtoPage.setPages(articlesResult.getPages());
+
+        return dtoPage;
+    }
+
+    @Override
+    public ArticlesDTO getArticleDetail(Integer id) {
+        Articles article = articlesMapper.selectById(id);
+        if (article == null) {
+            return null;
+        }
+        return convertToDTO(article);
+    }
+
+    /**
+     * 将Articles实体转换为ArticlesDTO（包含完整内容）
+     */
+    private ArticlesDTO convertToDTO(Articles article) {
+        ArticlesDTO dto = new ArticlesDTO();
+
+        // 复制基本属性
+        BeanUtils.copyProperties(article, dto);
+
+        // 查询并设置关联的分类
+        List<Categories> categories = articlesMapper.selectCategoriesByArticleId(article.getId());
+        dto.setCategories(categories);
+
+        // 查询并设置关联的标签
+        List<Tags> tags = articlesMapper.selectTagsByArticleId(article.getId());
+        dto.setTags(tags);
+
+        return dto;
+    }
+
+    /**
+     * 将Articles实体转换为ArticlesListDTO（不包含文章内容）
+     */
+    private ArticlesListDTO convertToListDTO(Articles article) {
+        ArticlesListDTO dto = new ArticlesListDTO();
+
+        // 复制基本属性（不包含content）
+        BeanUtils.copyProperties(article, dto);
+
+        // 查询并设置关联的分类
+        List<Categories> categories = articlesMapper.selectCategoriesByArticleId(article.getId());
+        dto.setCategories(categories);
+
+        // 查询并设置关联的标签
+        List<Tags> tags = articlesMapper.selectTagsByArticleId(article.getId());
+        dto.setTags(tags);
+
+        return dto;
     }
 }
