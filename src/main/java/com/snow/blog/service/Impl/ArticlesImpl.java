@@ -2,6 +2,7 @@ package com.snow.blog.service.Impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.snow.blog.dto.ArticlesArchiveDTO;
 import com.snow.blog.dto.ArticlesDTO;
 import com.snow.blog.dto.ArticlesListDTO;
 import com.snow.blog.entity.Articles;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +59,23 @@ public class ArticlesImpl implements ArticlesService {
             return null;
         }
         return convertToDTO(article);
+    }
+
+    @Override
+    public ArticlesArchiveDTO getArticlesArchive() {
+        // 查询所有已发布文章的归档信息
+        List<ArticlesArchiveDTO.ArchiveArticleInfo> articles = articlesMapper.selectArchiveArticles();
+
+        // 按创建年份分组文章
+        Map<Integer, List<ArticlesArchiveDTO.ArchiveArticleInfo>> articlesByYear = articles.stream()
+                .filter(article -> article.getCreatedAt() != null)
+                .collect(Collectors.groupingBy(article -> article.getCreatedAt().getYear()));
+
+        // 创建归档DTO并设置分组数据
+        ArticlesArchiveDTO archiveDTO = new ArticlesArchiveDTO();
+        archiveDTO.setArticlesByYear(articlesByYear);
+
+        return archiveDTO;
     }
 
     /**

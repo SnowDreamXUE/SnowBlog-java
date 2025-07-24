@@ -2,6 +2,7 @@ package com.snow.blog.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.snow.blog.dto.ArticlesArchiveDTO;
 import com.snow.blog.dto.ArticlesDTO;
 import com.snow.blog.dto.ArticlesListDTO;
 import com.snow.blog.service.ArticlesService;
@@ -59,5 +60,15 @@ public class ArticlesController {
             return Result.failed("文章不存在");
         }
         return Result.success(article);
+    }
+
+    /**
+     * 获取文章归档信息（按年份分组）
+     * @return 文章归档信息
+     */
+    @GetMapping("/archive")
+    public Result<ArticlesArchiveDTO> getArticlesArchive() {
+        ArticlesArchiveDTO archive = articlesService.getArticlesArchive();
+        return Result.success(archive);
     }
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.snow.blog.dto.ArticlesDTO;
 import com.snow.blog.dto.ArticlesListDTO;
+import com.snow.blog.dto.ArticlesArchiveDTO;
 
 import java.util.List;
 
@@ -26,4 +27,10 @@ public interface ArticlesService {
      * @return 文章详情
      */
     ArticlesDTO getArticleDetail(Integer id);
+
+    /**
+     * 获取文章归档信息（按年份分组）
+     * @return 文章归档信息
+     */
+    ArticlesArchiveDTO getArticlesArchive();
 }

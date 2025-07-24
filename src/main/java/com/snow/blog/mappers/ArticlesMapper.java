@@ -3,6 +3,7 @@ package com.snow.blog.mappers;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.snow.blog.dto.ArticlesArchiveDTO;
 import com.snow.blog.dto.ArticlesDTO;
 import com.snow.blog.entity.Articles;
 import com.snow.blog.entity.Categories;
@@ -76,4 +77,13 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
             "ORDER BY is_top DESC, published_at DESC" +
             "</script>")
     IPage<Articles> selectPublishedPage(Page<Articles> page, @Param("title") String title);
+
+    /**
+     * 查询所有已发布文章的归档信息（用于归档页面）
+     * @return 文章归档信息列表
+     */
+    @Select("SELECT a.id, a.title, a.created_at FROM articles a " +
+            "WHERE a.status = 'published' " +
+            "ORDER BY a.created_at DESC")
+    List<ArticlesArchiveDTO.ArchiveArticleInfo> selectArchiveArticles();
 }
