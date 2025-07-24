@@ -23,7 +23,7 @@ public class ArticlesController {
     }
 
     /**
-     * 分页查询文章列表（不包含文章内容）
+     * 分页查询文章列表（不包含文章内容，置顶文章优先）
      * @param currentPage 当前页码
      * @param pageSize 每页大小
      * @param title 标题关键词（可选）
@@ -56,7 +56,7 @@ public class ArticlesController {
     public Result<ArticlesDTO> getArticleDetail(@PathVariable Integer id) {
         ArticlesDTO article = articlesService.getArticleDetail(id);
         if (article == null) {
-            return Result.error("文章不存在");
+            return Result.failed("文章不存在");
         }
         return Result.success(article);
     }

@@ -57,7 +57,7 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
             "<if test='status != null and status != \"\"'>" +
             "AND status = #{status} " +
             "</if>" +
-            "ORDER BY created_at DESC " +
+            "ORDER BY is_top DESC, created_at DESC " +
             "</script>")
     IPage<Articles> selectArticlesPage(Page<Articles> page, @Param("title") String title, @Param("status") String status);
 
