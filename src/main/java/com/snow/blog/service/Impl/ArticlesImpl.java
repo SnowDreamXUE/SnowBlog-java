@@ -84,6 +84,7 @@ public class ArticlesImpl implements ArticlesService {
         if (article == null) {
             return null;
         }
+        article.setId(null);
         return convertToDTO(article);
     }
 
