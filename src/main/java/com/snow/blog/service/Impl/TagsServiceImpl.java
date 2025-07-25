@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class TagsImpl extends ServiceImpl<TagsMapper, Tags> implements TagsService {
+public class TagsServiceImpl extends ServiceImpl<TagsMapper, Tags> implements TagsService {
 
     @Resource
     private TagsMapper tagsMapper;

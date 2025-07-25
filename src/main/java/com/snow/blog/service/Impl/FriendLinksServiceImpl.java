@@ -7,5 +7,5 @@ import com.snow.blog.service.FriendLinksService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FriendLinksImpl extends ServiceImpl<FriendLinksMapper, FriendLinks> implements FriendLinksService {
+public class FriendLinksServiceImpl extends ServiceImpl<FriendLinksMapper, FriendLinks> implements FriendLinksService {
 }

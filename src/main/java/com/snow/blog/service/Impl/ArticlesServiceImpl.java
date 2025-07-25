@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class ArticlesImpl implements ArticlesService {
+public class ArticlesServiceImpl implements ArticlesService {
 
     @Resource
     private ArticlesMapper articlesMapper;

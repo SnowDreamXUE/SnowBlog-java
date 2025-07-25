@@ -7,5 +7,5 @@ import com.snow.blog.service.ArticleCategoriesService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ArticleCategoriesImpl extends ServiceImpl<ArticleCategoriesMapper, ArticleCategories> implements ArticleCategoriesService {
+public class ArticleCategoriesServiceImpl extends ServiceImpl<ArticleCategoriesMapper, ArticleCategories> implements ArticleCategoriesService {
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class CategoriesImpl extends ServiceImpl<CategoriesMapper, Categories>  implements CategoriesService {
+public class CategoriesServiceImpl extends ServiceImpl<CategoriesMapper, Categories>  implements CategoriesService {
 
     @Resource
     private CategoriesMapper categoriesMapper;
