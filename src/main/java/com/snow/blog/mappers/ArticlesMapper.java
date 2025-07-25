@@ -86,4 +86,12 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
             "WHERE a.status = 'published' " +
             "ORDER BY a.created_at DESC")
     List<ArticlesArchiveDTO.ArchiveArticleInfo> selectArchiveArticles();
+
+    /**
+     * 根据标题查询文章详情
+     * @param title 文章标题
+     * @return 文章实体
+     */
+    @Select("SELECT * FROM articles WHERE title = #{title} AND status = 'published'")
+    Articles selectByTitle(@Param("title") String title);
 }

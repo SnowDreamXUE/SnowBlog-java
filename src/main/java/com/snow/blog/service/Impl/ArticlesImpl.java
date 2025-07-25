@@ -78,6 +78,15 @@ public class ArticlesImpl implements ArticlesService {
         return archiveDTO;
     }
 
+    @Override
+    public ArticlesDTO getArticleDetailByTitle(String title) {
+        Articles article = articlesMapper.selectByTitle(title);
+        if (article == null) {
+            return null;
+        }
+        return convertToDTO(article);
+    }
+
     /**
      * 将Articles实体转换为ArticlesDTO（包含完整内容）
      */

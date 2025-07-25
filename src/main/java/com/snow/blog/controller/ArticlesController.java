@@ -71,4 +71,18 @@ public class ArticlesController {
         ArticlesArchiveDTO archive = articlesService.getArticlesArchive();
         return Result.success(archive);
     }
+
+    /**
+     * 根据标题获取文章详情（包含完整内容）
+     * @param title 文章标题
+     * @return 文章详情
+     */
+    @GetMapping("/title")
+    public Result<ArticlesDTO> getArticleDetailByTitle(@RequestParam String title) {
+        ArticlesDTO article = articlesService.getArticleDetailByTitle(title);
+        if (article == null) {
+            return Result.failed("文章不存在");
+        }
+        return Result.success(article);
+    }
 }

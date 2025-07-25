@@ -33,4 +33,11 @@ public interface ArticlesService {
      * @return 文章归档信息
      */
     ArticlesArchiveDTO getArticlesArchive();
+
+    /**
+     * 根据标题获取文章详情（包含完整内容）
+     * @param title 文章标题
+     * @return 文章详情
+     */
+    ArticlesDTO getArticleDetailByTitle(String title);
 }
