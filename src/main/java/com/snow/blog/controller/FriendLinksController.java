@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("/friend-links")
+@RequestMapping("/links")
 public class FriendLinksController {
 
     @Resource
