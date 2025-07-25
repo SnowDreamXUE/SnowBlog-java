@@ -19,4 +19,7 @@ public class Categories {
 
     @TableField("created_at")
     private LocalDateTime createdAt;
+
+    @TableField(exist = false)
+    private Integer articleCount; // 用于存储该分类下的文章数量，非数据库字段
 }
